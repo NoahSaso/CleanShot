@@ -8,10 +8,24 @@ extern "C" UIImage* _UICreateScreenUIImage();
 - (void)flash;
 @end
 
+@interface SBApplication : NSObject
+- (BOOL)statusBarHidden;
+@end
+
+@interface SpringBoard : UIApplication
+- (SBApplication *)_accessibilityFrontMostApplication;
+@end
+
 %hook SBScreenShotter
 
 - (void)saveScreenshot:(BOOL)screenshot {
-	//Get screenshot
+    //If status bar is hidden, don't crop
+	if([[(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication] statusBarHidden]){
+        %orig;
+        return;
+    }
+
+    //Get screenshot
     UIImage *screenImage = _UICreateScreenUIImage();
 
     //Flash screen (:
