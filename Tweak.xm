@@ -18,8 +18,11 @@ extern "C" UIImage* _UICreateScreenUIImage();
     SBScreenFlash* screenFlash = [%c(SBScreenFlash) sharedInstance];
     [screenFlash flash];
 
+    //Define new frame (* 2 for retina)
+    CGRect newFrame = CGRectMake(0, 20 * 2, screenImage.size.width * 2, (screenImage.size.height - 20) * 2);
+
     //Crop screenshot to rect size
-    CGImageRef imageRef = CGImageCreateWithImageInRect(screenImage.CGImage, CGRectMake(0, 20, screenImage.size.width, screenImage.size.height-20));
+    CGImageRef imageRef = CGImageCreateWithImageInRect(screenImage.CGImage, newFrame);
     screenImage = [UIImage imageWithCGImage:imageRef]; 
     CGImageRelease(imageRef);
 
