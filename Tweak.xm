@@ -6,6 +6,7 @@ extern "C" UIImage* _UICreateScreenUIImage();
 @interface SBScreenFlash : NSObject
 + (id)sharedInstance;
 - (void)flash;
+- (void)flashWhiteWithCompletion:(id)arg1;
 @end
 
 @interface SBApplication : NSObject
@@ -30,7 +31,10 @@ extern "C" UIImage* _UICreateScreenUIImage();
 
     //Flash screen (:
     SBScreenFlash* screenFlash = [%c(SBScreenFlash) sharedInstance];
-    [screenFlash flash];
+    if([screenFlash respondsToSelector:@selector(flashWhiteWithCompletion:)])
+        [screenFlash flashWhiteWithCompletion:nil];
+    else
+        [screenFlash flash];
 
     //Define new frame (* 2 for retina)
     CGRect newFrame = CGRectMake(0, 20 * 2, screenImage.size.width * 2, (screenImage.size.height - 20) * 2);
