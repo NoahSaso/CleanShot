@@ -5,6 +5,7 @@ extern "C" UIImage* _UICreateScreenUIImage();
 
 @interface SBScreenFlash : NSObject
 + (id)sharedInstance;
++ (id)mainScreenFlasher;
 - (void)flash;
 - (void)flashWhiteWithCompletion:(id)arg1;
 @end
@@ -30,7 +31,12 @@ extern "C" UIImage* _UICreateScreenUIImage();
     UIImage *screenImage = _UICreateScreenUIImage();
 
     //Flash screen (:
-    SBScreenFlash* screenFlash = [%c(SBScreenFlash) sharedInstance];
+    SBScreenFlash* screenFlash;
+    if([%c(SBScreenFlash) respondsToSelector:@selector(mainScreenFlasher)])
+        screenFlash = [%c(SBScreenFlash) mainScreenFlasher];
+    else
+        screenFlash = [%c(SBScreenFlash) sharedInstance];
+    
     if([screenFlash respondsToSelector:@selector(flashWhiteWithCompletion:)])
         [screenFlash flashWhiteWithCompletion:nil];
     else
