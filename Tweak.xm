@@ -42,8 +42,8 @@ extern "C" UIImage* _UICreateScreenUIImage();
     else
         [screenFlash flash];
 
-    //Define new frame (* 2 for retina)
-    CGRect newFrame = CGRectMake(0, 20 * 2, screenImage.size.width * 2, (screenImage.size.height - 20) * 2);
+    //Define new frame (* scale for retina)
+    CGRect newFrame = CGRectMake(0, 20 * [UIScreen mainScreen].scale, screenImage.size.width * [UIScreen mainScreen].scale, (screenImage.size.height - 20) * [UIScreen mainScreen].scale);
 
     //Crop screenshot to rect size
     CGImageRef imageRef = CGImageCreateWithImageInRect(screenImage.CGImage, newFrame);
